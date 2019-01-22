@@ -1,0 +1,23 @@
+{
+  "name": "gencss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generate.css.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evgen4ik91/genCSS.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evgen4ik91/genCSS/issues"
+  },
+  "homepage": "https://github.com/evgen4ik91/genCSS#readme",
+  "dependencies": {
+    "commander": "^2.19.0",
+    "debug": "^4.1.1"
+  }
+}
