@@ -4,7 +4,7 @@ const fs = require('fs');
 const program = require('commander');
 const prompt = require('prompt-sync')();
 
-const times = 1000000;
+let i = 1000000;
 const scriptFileName = __filename.split(/[\\/]/).pop();
 
 program
@@ -12,7 +12,6 @@ program
   .option('-p, --filepath [value]', 'Type path')
   .option('-n, --filename [value]', 'Type name')
   .parse(process.argv);
-
 
 let loading = {
     frames: ['.', '..', '...'],
@@ -36,18 +35,33 @@ let loading = {
 let filepath = program.filepath ? program.filepath : prompt('Path is required. Type the filepath: ');
 let filename = program.filename ? program.filename + '.css' : 'style.css';
 
-
-loading.start();
+//loading.start();
 let file = fs.createWriteStream(filepath + filename);
 
 file.on('finish', () => { 
     loading.stop();
     console.log('Finished!');
 });
+
 file.on('error', () => {
     loading.stop();
-    console.log('err');
+    console.log('Something went wrong');
 });
 
-for (let i = 1; i <= times; i++) file.write(`.class${i} {background: 'red'};${ i === times ? '' : '\n'}`);
-file.end();
+function write() {
+    let ok = true;
+    let encoding = 'utf8';
+
+    do {
+        if (i === 0) file.write(str(i, true), encoding, file.end);
+        else ok = file.write(str(i), encoding, --i);
+    } while (i > 0 && ok);
+
+    if (i > 0) file.once('drain', write);
+}
+
+function str(i, last = false) {
+    return `.class${i} {background: 'red'};${last ? '' : '\n'}`;
+}
+
+write();
